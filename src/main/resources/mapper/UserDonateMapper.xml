@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shixun.app.mapper.UserDonateMapper">
+
+    <resultMap id="BaseResultMap" type="com.shixun.app.model.entity.UserDonate">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="donateUserId" column="donateUserId" jdbcType="BIGINT"/>
+            <result property="receiveUserId" column="receiveUserId" jdbcType="BIGINT"/>
+            <result property="donateMoney" column="donateMoney" jdbcType="INTEGER"/>
+            <result property="donateThing" column="donateThing" jdbcType="VARCHAR"/>
+            <result property="createTime" column="createTime" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="updateTime" jdbcType="TIMESTAMP"/>
+            <result property="isDelete" column="isDelete" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,donateUserId,receiveUserId,
+        donateMoney,donateThing,createTime,
+        updateTime,isDelete
+    </sql>
+</mapper>
