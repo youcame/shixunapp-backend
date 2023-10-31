@@ -1,15 +1,15 @@
 package com.shixun.app.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.shixun.app.annotation.AuthCheck;
-import com.shixun.app.common.BaseResponse;
-import com.shixun.app.common.DeleteRequest;
-import com.shixun.app.common.ErrorCode;
-import com.shixun.app.common.ResultUtils;
+import com.shixun.app.common.*;
 import com.shixun.app.constant.UserConstant;
 import com.shixun.app.exception.BusinessException;
 import com.shixun.app.exception.ThrowUtils;
+import com.shixun.app.model.entity.User;
 import com.shixun.app.model.entity.UserDonate;
 import com.shixun.app.model.vo.UserDonateVO;
+import com.shixun.app.model.vo.UserVO;
 import com.shixun.app.service.UserDonateService;
 import com.shixun.app.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 捐献情况接口
@@ -99,22 +102,39 @@ public class UserDonateController {
     }
 
     /**
-     * 根据 id 获取捐献情况（仅管理员）
+     * 根据 childrenId 获取捐献情况（仅管理员）
      *
-     * @param id
+     * @param childrenId
      * @param request
      * @return
      */
-    @GetMapping("/get")
+    @GetMapping("/get/children")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<UserDonate> getUserDonateById(long id, HttpServletRequest request) {
-        if (id <= 0) {
+    public BaseResponse<List<UserDonateVO>> getUserReceiveById(Long childrenId, HttpServletRequest request) {
+        if (childrenId <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
-        UserDonate userDonate = userDonateService.getById(id);
-        ThrowUtils.throwIf(userDonate == null, ErrorCode.NOT_FOUND_ERROR);
-        return ResultUtils.success(userDonate);
+        List<UserDonateVO> list = userDonateService.getUserReceiveById(childrenId);
+        return ResultUtils.success(list);
     }
+
+    /**
+     * 通过捐助者获取信息
+     * @param donatorId
+     * @param request
+     * @return
+     */
+    @GetMapping("/get/donate")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<List<UserDonateVO>> getUserDonateById(Long donatorId, HttpServletRequest request) {
+        if (donatorId <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        List<UserDonateVO> list = userDonateService.getUserDonateById(donatorId);
+        return ResultUtils.success(list);
+    }
+
+
 
 
 
