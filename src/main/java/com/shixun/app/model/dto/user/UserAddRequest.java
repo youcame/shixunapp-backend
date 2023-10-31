@@ -18,6 +18,11 @@ public class UserAddRequest implements Serializable {
     private String userName;
 
     /**
+     * 用户密码
+     */
+    private String userPassword;
+
+    /**
      * 账号
      */
     private String userAccount;

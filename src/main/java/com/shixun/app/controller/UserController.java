@@ -1,5 +1,6 @@
 package com.shixun.app.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.shixun.app.annotation.AuthCheck;
 import com.shixun.app.common.BaseResponse;
@@ -24,9 +25,11 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.shixun.app.service.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -136,6 +139,13 @@ public class UserController {
         if (userAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userAccount",userAddRequest.getUserAccount());
+        if(userService.count(queryWrapper)!=0){
+            throw new BusinessException(ErrorCode.PARAMS_ERROR,"该用户名已被占用");
+        }
+        String encryptPassword = DigestUtils.md5DigestAsHex((UserServiceImpl.SALT + userAddRequest.getUserPassword()).getBytes());
+        userAddRequest.setUserPassword(encryptPassword);
         User user = new User();
         BeanUtils.copyProperties(userAddRequest, user);
         boolean result = userService.save(user);
