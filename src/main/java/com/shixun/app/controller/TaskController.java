@@ -123,7 +123,7 @@ public class TaskController {
      * @param request
      * @return
      */
-    @GetMapping("/finish")
+    @PostMapping("/finish")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
     public BaseResponse<Boolean> finishTaskById(Long id,HttpServletRequest request) {
         if (id <= 0) {
@@ -154,5 +154,6 @@ public class TaskController {
         }
         return ResultUtils.success(list);
     }
+
 
 }
