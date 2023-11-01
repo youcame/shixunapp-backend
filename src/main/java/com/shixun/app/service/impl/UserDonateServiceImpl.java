@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
+import static com.shixun.app.constant.UserConstant.*;
+
 /**
 * @author HUANG
 * @description 针对表【user_donate】的数据库操作Service实现
@@ -80,9 +82,9 @@ public class UserDonateServiceImpl extends ServiceImpl<UserDonateMapper, UserDon
         int volNum=0;
         int donNum=0;
         for (User user : list1) {
-            if("children".equals(user.getUserRole()))chiNum++;
-            else if("volunteer".equals(user.getUserRole()))volNum++;
-            else if ("donator".equals(user.getUserRole())) {
+            if(CHILDREN_ROLE.equals(user.getUserRole()))chiNum++;
+            else if(VOLUNTEER_ROLE.equals(user.getUserRole()))volNum++;
+            else if (DONATOR_ROLE.equals(user.getUserRole())) {
                 donNum++;
             }
         }
