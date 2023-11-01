@@ -8,6 +8,7 @@ import com.shixun.app.exception.BusinessException;
 import com.shixun.app.exception.ThrowUtils;
 import com.shixun.app.model.entity.User;
 import com.shixun.app.model.entity.UserDonate;
+import com.shixun.app.model.vo.StatisticVO;
 import com.shixun.app.model.vo.UserDonateVO;
 import com.shixun.app.model.vo.UserVO;
 import com.shixun.app.service.UserDonateService;
@@ -132,6 +133,18 @@ public class UserDonateController {
         }
         List<UserDonateVO> list = userDonateService.getUserDonateById(donatorId);
         return ResultUtils.success(list);
+    }
+
+    /**
+     * 获取所有统计信息，用于数据可视化
+     * @param request
+     * @return
+     */
+    @GetMapping("/get/statistic")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<StatisticVO> getStatistic(HttpServletRequest request) {
+        StatisticVO statistic = userDonateService.getStatistic();
+        return ResultUtils.success(statistic);
     }
 
 

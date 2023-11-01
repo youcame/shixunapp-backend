@@ -2,6 +2,7 @@ package com.shixun.app.service;
 
 import com.shixun.app.model.entity.UserDonate;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.shixun.app.model.vo.StatisticVO;
 import com.shixun.app.model.vo.UserDonateVO;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface UserDonateService extends IService<UserDonate> {
      * @param donatorId
      */
     public List<UserDonateVO> getUserDonateById(Long donatorId);
+
+    public StatisticVO getStatistic();
 }

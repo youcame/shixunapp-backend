@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.shixun.app.model.entity.User;
 import com.shixun.app.model.entity.UserDonate;
+import com.shixun.app.model.vo.StatisticVO;
 import com.shixun.app.model.vo.UserDonateVO;
 import com.shixun.app.model.vo.UserVO;
 import com.shixun.app.service.UserDonateService;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -66,6 +69,46 @@ public class UserDonateServiceImpl extends ServiceImpl<UserDonateMapper, UserDon
             list.add(userDonateVO);
         }
         return list;
+    }
+
+    @Override
+    public StatisticVO getStatistic() {
+        StatisticVO statisticVO = new StatisticVO();
+        QueryWrapper<User> queryWrapper1 = new QueryWrapper<>();
+        List<User> list1 = userService.list(queryWrapper1);
+        int chiNum=0;
+        int volNum=0;
+        int donNum=0;
+        for (User user : list1) {
+            if("children".equals(user.getUserRole()))chiNum++;
+            else if("volunteer".equals(user.getUserRole()))volNum++;
+            else if ("donator".equals(user.getUserRole())) {
+                donNum++;
+            }
+        }
+        int total = 0;
+        HashSet<Long> donatorHs = new HashSet<>();
+        HashSet<Long> childrenHs = new HashSet<>();
+        QueryWrapper<UserDonate> queryWrapper = new QueryWrapper<>();
+        List<UserDonate> list = this.list(queryWrapper);
+        for (UserDonate userDonate : list) {
+            if(!donatorHs.contains(userDonate.getDonateUserId())){
+                donatorHs.add(userDonate.getDonateUserId());
+            }
+            if(!childrenHs.contains(userDonate.getReceiveUserId())){
+                childrenHs.add(userDonate.getReceiveUserId());
+            }
+            if(userDonate.getDonateMoney()!=0){
+                total+=userDonate.getDonateMoney();
+            }
+        }
+        statisticVO.setChildrenNum(chiNum);
+        statisticVO.setVolunteerNum(volNum);
+        statisticVO.setDonatorNum(donNum);
+        statisticVO.setAlreadyDonateNum(donatorHs.size());
+        statisticVO.setTotalMoney(total);
+        statisticVO.setAlreadyReceiveNum(childrenHs.size());
+        return statisticVO;
     }
 }
 
