@@ -96,14 +96,14 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
                 queryWrapper.like("tags", "\"" + tag + "\"");
             }
         }
-        if(notId!=0) {
-            queryWrapper.ne(ObjectUtils.isNotEmpty(notId), "id", notId);
+        if(notId!=null&&notId!=0) {
+            queryWrapper.ne("id", notId);
         }
-        if (id != 0) {
-            queryWrapper.eq(ObjectUtils.isNotEmpty(id), "id", id);
+        if (id!=null&&id != 0) {
+            queryWrapper.eq("id", id);
         }
-        if(userId!=0) {
-            queryWrapper.eq(ObjectUtils.isNotEmpty(userId), "userId", userId);
+        if(userId!=null&&userId!=0) {
+            queryWrapper.eq("userId", userId);
         }
 //        queryWrapper.eq("isDelete", 0);
         return queryWrapper;
