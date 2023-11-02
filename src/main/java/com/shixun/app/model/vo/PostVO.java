@@ -26,6 +26,8 @@ public class PostVO implements Serializable {
      */
     private Long id;
 
+
+
     /**
      * 标题
      */
@@ -65,6 +67,11 @@ public class PostVO implements Serializable {
      * 标签列表
      */
     private List<String> tagList;
+
+    /**
+     * 新闻图片
+     */
+    private String avatar;
 
     /**
      * 创建人信息

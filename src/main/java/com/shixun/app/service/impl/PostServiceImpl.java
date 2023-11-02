@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.gson.Gson;
 import com.shixun.app.common.ErrorCode;
+import com.shixun.app.constant.CommonConstant;
 import com.shixun.app.exception.BusinessException;
 import com.shixun.app.exception.ThrowUtils;
 import com.shixun.app.mapper.PostMapper;
@@ -15,6 +16,7 @@ import com.shixun.app.model.vo.PostVO;
 import com.shixun.app.model.vo.UserVO;
 import com.shixun.app.service.PostService;
 import com.shixun.app.service.UserService;
+import com.shixun.app.utils.SqlUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -78,6 +80,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
         if (postQueryRequest == null) {
             return queryWrapper;
         }
+        String sortField = postQueryRequest.getSortField();
+        String sortOrder = postQueryRequest.getSortOrder();
         String searchText = postQueryRequest.getSearchText();
         Long id = postQueryRequest.getId();
         String title = postQueryRequest.getTitle();
@@ -105,7 +109,8 @@ public class PostServiceImpl extends ServiceImpl<PostMapper, Post>
         if(userId!=null&&userId!=0) {
             queryWrapper.eq("userId", userId);
         }
-//        queryWrapper.eq("isDelete", 0);
+        queryWrapper.orderBy(SqlUtils.validSortField(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
+                sortField);
         return queryWrapper;
     }
 
