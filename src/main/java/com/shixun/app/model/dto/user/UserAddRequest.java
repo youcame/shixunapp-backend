@@ -38,6 +38,11 @@ public class UserAddRequest implements Serializable {
     private String userProfile;
 
     /**
+     * 用户详细介绍
+     */
+    private String detailProfile;
+
+    /**
      * 用户角色: user, admin
      */
     private String userRole;
