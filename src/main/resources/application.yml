@@ -52,8 +52,8 @@ mybatis-plus:
       logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
 cos:
   client:
-    accessKey: AKIDDIl01nMciaLvKXXLxOdibJo6D7qMhpmW
-    secretKey: ta4NTN4bv3ziGepnaBcrtkQtAIG1av40
+    accessKey: 000
+    secretKey: 000
     region: ap-shanghai
     bucket: hzh-1318734603
     endpoint: https://hzh-1318734603.cos.ap-shanghai.myqcloud.com
