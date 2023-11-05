@@ -8,6 +8,7 @@ import com.shixun.app.exception.BusinessException;
 import com.shixun.app.exception.ThrowUtils;
 import com.shixun.app.model.entity.User;
 import com.shixun.app.model.entity.UserDonate;
+import com.shixun.app.model.vo.DonateAddRequest;
 import com.shixun.app.model.vo.StatisticVO;
 import com.shixun.app.model.vo.UserDonateVO;
 import com.shixun.app.model.vo.UserVO;
@@ -47,18 +48,18 @@ public class UserDonateController {
     /**
      * 创建捐献情况
      *
-     * @param userDonateVO
+     * @param donateAddRequest
      * @param request
      * @return
      */
     @PostMapping("/add")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Integer> addUserDonate(@RequestBody UserDonateVO userDonateVO, HttpServletRequest request) {
-        if (userDonateVO == null) {
+    public BaseResponse<Integer> addUserDonate(@RequestBody DonateAddRequest donateAddRequest, HttpServletRequest request) {
+        if (donateAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
         UserDonate userDonate = new UserDonate();
-        BeanUtils.copyProperties(userDonateVO, userDonate);
+        BeanUtils.copyProperties(donateAddRequest, userDonate);
         boolean result = userDonateService.save(userDonate);
         ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
         return ResultUtils.success(userDonate.getId());
