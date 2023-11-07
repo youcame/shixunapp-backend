@@ -16,7 +16,6 @@ public class ResourceAddRequest implements Serializable {
     /**
      * 总物资属性
      */
-    @TableId
     private Integer id;
 
     /**
